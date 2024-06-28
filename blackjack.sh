@@ -88,12 +88,21 @@ if [ "$1" = "--win" ] || [ "$1" = "-w" ]; then
                     echo "Invalid input. Please enter a number from 1-10 or J, Q, K, A."
                 fi
             echo "Your hand has following cards: ${hand[@]}"
-            # if hand contains the letters k,q or j, then change it for the fixed value 10.
+            # if hand contains the letters k,q or j, then change it for the fixed value 10. if it has an "a", it should give out two hands. one where the "a" is 11 and one where the "a" is 1.
             for (( i=0; i<${#hand[@]}; i++ )); do
                 if [[ ${hand[i]} =~ ^[KQJkqj]$ ]]; then
                     hand[i]=10
+                    echo "The value of your hand is: $(( ${hand[0]} + ${hand[1]} ))"
+                fi
+                if [[ ${hand[i]} =~ ^[Aa]$ ]]; then
+                    hand_with_11=("${hand[@]}")
+                    hand_with_1=("${hand[@]}")
+                    hand_with_11[i]=11
+                    hand_with_1[i]=1
+                    echo "The value of your hand is: $(( ${hand_with_11[0]} + ${hand_with_11[1]} )) or $(( ${hand_with_1[0]} + ${hand_with_1[1]} ))"
                 fi
             done
-            echo "The value of your hand is: $(( ${hand[0]} + ${hand[1]} ))"
+        
+        
         done
 fi
