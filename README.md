@@ -1,2 +1,2 @@
-# abschlussprojekt_bash
+# BJIB: BlackJack In Bash
  
