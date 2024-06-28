@@ -12,15 +12,10 @@
 # Version: 0.1
 
 
-
-display_error() {
-    echo "Wrong usage of file. For help run blackjack.sh --help OR blackjack.sh -h"
-    exit 1
-}
-
-# Check if no parameters were given
 if [ $# -eq 0 ]; then
-    display_error
+    echo "Wrong usage of script."
+    echo "For help run './blackjack.sh --help' OR 'blackjack.sh -h'"
+    exit 1
 fi
 
 ################################################################
@@ -50,6 +45,7 @@ fi
 #               explains the rules of the game                 #
 #                                                              #
 ################################################################
+
 if [ "$1" = "--rules" ] || [ "$1" = "-r" ]; then
     echo "Rules:"
     echo "----------------------------------------------------------------------------"
@@ -61,18 +57,13 @@ if [ "$1" = "--rules" ] || [ "$1" = "-r" ]; then
     echo "----------------------------------------------------------------------------"
 fi
 
-
-
-
-
-
-
 ################################################################
 #                                                              #
 #        gives the best possible output determined by          #
 #      the given hand of the player and partly the dealer      #
 #                                                              #
 ################################################################
+
 if [ "$1" = "--win" ] || [ "$1" = "-w" ]; then
         echo "Please enter your FIRST CARD:"
         echo "1-10 or J, Q, K, A"
@@ -96,6 +87,13 @@ if [ "$1" = "--win" ] || [ "$1" = "-w" ]; then
                 else
                     echo "Invalid input. Please enter a number from 1-10 or J, Q, K, A."
                 fi
-            echo "Your hand: ${hand[@]}"
+            echo "Your hand has following cards: ${hand[@]}"
+            # if hand contains the letters k,q or j, then change it for the fixed value 10.
+            for (( i=0; i<${#hand[@]}; i++ )); do
+                if [[ ${hand[i]} =~ ^[KQJkqj]$ ]]; then
+                    hand[i]=10
+                fi
+            done
+            echo "The value of your hand is: $(( ${hand[0]} + ${hand[1]} ))"
         done
 fi
