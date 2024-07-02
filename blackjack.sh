@@ -33,19 +33,19 @@ playgame(){
     done
     dealer_card1=${cards[$dealer_card1_index]}
     unset "cards[$dealer_card1_index]"
-    echo "Dealer's first card: $dealer_card1"
-
     dealer_card2_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$dealer_card2_index]} ]]; do
         dealer_card2_index=$((RANDOM % ${#cards[@]}))
     done
     dealer_card2=${cards[$dealer_card2_index]}
     unset "cards[$dealer_card2_index]"
-    echo "Dealer's second card: $dealer_card2"
-
     dealer_hand=$(calculate_hand "$dealer_card1" "$dealer_card2")
     echo "Dealer's hand: $dealer_card1 + ???"
-    echo "secret hand: $dealer_hand"
+
+
+
+
+
 
     player_card1_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$player_card1_index]} ]]; do
@@ -53,18 +53,34 @@ playgame(){
     done
     player_card1=${cards[$player_card1_index]}
     unset "cards[$player_card1_index]"
-    echo "Player's first card: $player_card1"
-
     player_card2_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$player_card2_index]} ]]; do
         player_card2_index=$((RANDOM % ${#cards[@]}))
     done
     player_card2=${cards[$player_card2_index]}
     unset "cards[$player_card2_index]"
-    echo "Player's second card: $player_card2"
-    
     player_hand=$(calculate_hand "$player_card1" "$player_card2")
-    echo "Player's hand: $player_hand"
+    echo "your hand: $player_card1 + $player_card2 = $player_hand"
+
+
+echo "Do you want to hit or stand?"
+read -p "Enter your choice (hit/stand): " choice
+while [[ $choice == "hit" ]]; do
+    player_card_index=$((RANDOM % ${#cards[@]}))
+    while [[ -z ${cards[$player_card_index]} ]]; do
+        player_card_index=$((RANDOM % ${#cards[@]}))
+    done
+    player_card=${cards[$player_card_index]}
+    unset "cards[$player_card_index]"
+    player_hand=$((player_hand + player_card))
+    echo "You drew a $player_card"
+    echo "Your hand: $player_hand"
+    if [[ $player_hand -gt 21 ]]; then
+        echo "You went bust! Dealer wins!"
+        break
+    fi
+    read -p "Do you want to hit or stand? " choice
+done
 
 }
 calculate_hand() {
