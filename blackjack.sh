@@ -18,6 +18,26 @@
 # change a to 1 if the sum of the hand is more than 21
 # return the sum of the hand
 
+compare_cards() {
+    local player_score=$1
+    local dealer_score=$2
+
+    if [[ $dealer_score -gt 21 ]]; then
+        echo "You win! The dealer went bust!"
+    elif [[ $player_score -gt 21 ]]; then
+        echo "You went bust :("
+    else
+        if [[ $player_score -eq $dealer_score ]]; then
+            echo "It was a draw!"
+        elif [[ $dealer_score -gt $player_score ]]; then
+            echo "You lost, Dealer has more than you!"
+        elif [[ $dealer_score -lt $player_score ]]; then
+            echo "You win! Good lad yourself!"
+        else
+            echo "Dealer has won...no good. You lose!"
+        fi
+    fi
+}
 playgame(){
     cards=(2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a")
     player_score=0
@@ -25,7 +45,7 @@ playgame(){
     player_hand=0
     dealer_hand=0
     # Deal cards to player and dealer
-
+    clear
     
     dealer_card1_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$dealer_card1_index]} ]]; do
@@ -40,12 +60,28 @@ playgame(){
     dealer_card2=${cards[$dealer_card2_index]}
     unset "cards[$dealer_card2_index]"
     dealer_hand=$(calculate_hand "$dealer_card1" "$dealer_card2")
+
+
+    if [[ $dealer_hand -lt 16 ]]; then
+        dealer_card3_index=$((RANDOM % ${#cards[@]}))
+        while [[ -z ${cards[$dealer_card3_index]} ]]; do
+            dealer_card3_index=$((RANDOM % ${#cards[@]}))
+        done
+        dealer_card3=${cards[$dealer_card3_index]}
+        unset "cards[$dealer_card3_index]"
+        dealer_hand=$(calculate_hand "$dealer_hand" "$dealer_card3")
+        if [[ $dealer_hand -gt 21 ]]; then
+            echo "Dealer went bust! You win!"
+            break
+        fi
+        echo "Dealer took another card: $dealer_card3"
+        echo "Dealer's hand: $dealer_card1 + $dealer_card3 + ??? "
+
+    else
+    echo "-----------------------------------------------------"
     echo "Dealer's hand: $dealer_card1 + ???"
-
-
-
-
-
+    echo "-----------------------------------------------------"
+    fi
 
     player_card1_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$player_card1_index]} ]]; do
@@ -60,28 +96,57 @@ playgame(){
     player_card2=${cards[$player_card2_index]}
     unset "cards[$player_card2_index]"
     player_hand=$(calculate_hand "$player_card1" "$player_card2")
-    echo "your hand: $player_card1 + $player_card2 = $player_hand"
+
+
+
+    echo "-----------------------------------------------------"
+    echo "Your hand: $player_card1 + $player_card2 = $player_hand"
+    echo "-----------------------------------------------------"
 
 
 echo "Do you want to hit or stand?"
 read -p "Enter your choice (hit/stand): " choice
-while [[ $choice == "hit" ]]; do
+while [[ $choice == "h" || $choice == "H" || $choice == "HIT" || $choice == "hit" ]]; do
     player_card_index=$((RANDOM % ${#cards[@]}))
     while [[ -z ${cards[$player_card_index]} ]]; do
         player_card_index=$((RANDOM % ${#cards[@]}))
     done
     player_card=${cards[$player_card_index]}
     unset "cards[$player_card_index]"
+
+    if [[ $player_card == "a" ]]; then
+        if [[ $((player_hand + 11)) -gt 21 ]]; then
+            player_card=1
+        else
+            player_card=11
+        fi
+    fi
+    if [[ $player_card == "k" || $player_card == "q" || $player_card == "j" ]]; then
+        player_card=10
+    fi
+
     player_hand=$((player_hand + player_card))
     echo "You drew a $player_card"
     echo "Your hand: $player_hand"
+    echo "Dealer's hand: $dealer_card1 + ???"
     if [[ $player_hand -gt 21 ]]; then
         echo "You went bust! Dealer wins!"
         break
     fi
     read -p "Do you want to hit or stand? " choice
+    clear
+    if [[ $choice == "stand" || $choice == "STAND" || $choice == "s" || $choice == "S" ]]; then
+        
+        break
+    fi
 done
-
+if [[ $dealer_card3 ]]; then
+    echo "Dealer's hand: $dealer_card1 + $dealer_card2 + $dealer_card3 = $dealer_hand"
+else
+    echo "Dealer's hand: $dealer_card1 + $dealer_card2 = $dealer_hand"
+fi
+echo "Your hand: $player_hand"
+compare_cards "$player_hand" "$dealer_hand"
 }
 calculate_hand() {
     local card1=$1
@@ -212,6 +277,7 @@ case "$1" in
     --play | -p)
         # Hier kommt der Code für das Spiel hin
         echo "This is the game"
+        clear
         playgame
         ;;
     *)
@@ -220,26 +286,3 @@ case "$1" in
         exit 1
         ;;
 esac
-
-compare_cards() {
-    local player_score=$1
-    local dealer_score=$2
-
-    if [[ $dealer_score -gt 21 ]]; then
-        echo "You win! The dealer went bust!"
-    elif [[ $player_score -gt 21 ]]; then
-        echo "You went bust :("
-    else
-        if [[ $player_score -eq $dealer_score ]]; then
-            echo "It was a draw!"
-        elif [[ $dealer_score -gt $player_score ]]; then
-            echo "You lost, Dealer has blackjack!"
-        elif [[ $player_score -eq 0 ]]; then
-            echo "You were dealt Blackjack! Congrats you win!"
-        elif [[ $player_score -gt $dealer_score ]]; then
-            echo "You win! Good lad yourself!"
-        else
-            echo "Dealer has won...no good. You lose!"
-        fi
-    fi
-}
