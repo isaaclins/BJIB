@@ -24,7 +24,77 @@ playgame(){
     dealer_score=0
     player_hand=0
     dealer_hand=0
+    # Deal cards to player and dealer
 
+    
+    dealer_card1_index=$((RANDOM % ${#cards[@]}))
+    while [[ -z ${cards[$dealer_card1_index]} ]]; do
+        dealer_card1_index=$((RANDOM % ${#cards[@]}))
+    done
+    dealer_card1=${cards[$dealer_card1_index]}
+    unset "cards[$dealer_card1_index]"
+    echo "Dealer's first card: $dealer_card1"
+
+    dealer_card2_index=$((RANDOM % ${#cards[@]}))
+    while [[ -z ${cards[$dealer_card2_index]} ]]; do
+        dealer_card2_index=$((RANDOM % ${#cards[@]}))
+    done
+    dealer_card2=${cards[$dealer_card2_index]}
+    unset "cards[$dealer_card2_index]"
+    echo "Dealer's second card: $dealer_card2"
+
+    dealer_hand=$(calculate_hand "$dealer_card1" "$dealer_card2")
+    echo "Dealer's hand: $dealer_card1 + ???"
+    echo "secret hand: $dealer_hand"
+
+    player_card1_index=$((RANDOM % ${#cards[@]}))
+    while [[ -z ${cards[$player_card1_index]} ]]; do
+        player_card1_index=$((RANDOM % ${#cards[@]}))
+    done
+    player_card1=${cards[$player_card1_index]}
+    unset "cards[$player_card1_index]"
+    echo "Player's first card: $player_card1"
+
+    player_card2_index=$((RANDOM % ${#cards[@]}))
+    while [[ -z ${cards[$player_card2_index]} ]]; do
+        player_card2_index=$((RANDOM % ${#cards[@]}))
+    done
+    player_card2=${cards[$player_card2_index]}
+    unset "cards[$player_card2_index]"
+    echo "Player's second card: $player_card2"
+    
+    player_hand=$(calculate_hand "$player_card1" "$player_card2")
+    echo "Player's hand: $player_hand"
+
+}
+calculate_hand() {
+    local card1=$1
+    local card2=$2
+    local sum=0
+
+    if [[ $card1 == "a" && $card2 == "a" ]]; then
+        card1=11
+        card2=1
+    fi
+    # Convert k, q, j to 10
+    case $card1 in
+        k|q|j)
+            card1=10
+            ;;
+        a)
+            card1=11
+            ;;
+    esac
+    case $card2 in
+        k|q|j)
+            card2=10
+            ;;
+        a)
+            card2=11
+            ;;
+    esac
+    sum=$((card1 + card2))
+    echo "$sum"
 }
 bestchoice() {
     read -p "Enter the first card: " card1
