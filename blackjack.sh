@@ -5,60 +5,64 @@
 # The script uses functions to handle different aspects of the game, such as dealing cards, calculating scores, and determining the winner.
 # It also includes a main game loop that allows players to play multiple rounds until they choose to quit.
 # The script also includes a help option that explains the rules of the game and how to play.
-# The script also includes a win option that helps players play the game with the best winrate possible.
-#
+# The script also includes a win option that helps players input the game cards and end with the best winrate possible.
+
 # Author: Isaaclins <3
 # Version: 0.1
 
-win_game() {
-    echo "Please enter your FIRST CARD:"
-    echo "1-10 or J, Q, K, A"
-    read input
-    if [[ "$input" =~ ^[1-9]$|^10$|^J$|^Q$|^K$|^A$|^j$|^q$|^k$|^a$ ]]; then
-        hand+=("$input")
-    else
-        echo "Invalid input."
-        echo "Please enter a number from 1-10 or J, Q, K, A."
+# PLAY GAME
+# ask for first card, save in hand.
+# ask for second card, save in hand.
+# change k, q, j to 10
+# change a to 11 if the sum of the hand is less than 21
+# change a to 1 if the sum of the hand is more than 21
+# return the sum of the hand
+
+bestchoice() {
+    read -p "Enter the first card: " card1
+    # Check for valid input
+    if [[ ! $card1 =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
+        echo "Invalid input for card1. Please enter a valid card."
         return
     fi
-    echo "Please enter your SECOND CARD:"
-    read input
-    if [[ "$input" =~ ^[1-9]$|^10$|^J$|^Q$|^K$|^A$|^j$|^q$|^k$|^a$ ]]; then
-        hand+=("$input")  
-    else
-        echo "Invalid input. Please enter a number from 1-10 or J, Q, K, A."
+    read -p "Enter the second card: " card2
+    if [[ ! $card2 =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
+        echo "Invalid input for card2. Please enter a valid card."
         return
     fi
-    # if hand contains the letters k,q or j, then change it for the fixed value 10. if it has an "a", it should give out two hands. one where the "a" is 11 and one where the "a" is 1.
-    sum=0
-    value_displayed=false
-    for (( i=0; i<${#hand[@]}; i++ )); do
-        if [[ ${hand[i]} =~ ^[KQJkqj]$ ]]; then
-            hand[i]=10
-        fi
-        if [[ ${hand[i]} =~ ^[Aa]$ ]]; then
-            hand_with_11=("${hand[@]}")
-            hand_with_1=("${hand[@]}")
-            hand_with_11[i]=11
-            hand_with_1[i]=1
-            if [[ $value_displayed == false ]]; then
-                echo "The value of your hand is: $(( ${hand_with_11[0]} + ${hand_with_11[1]} )) or $(( ${hand_with_1[0]} + ${hand_with_1[1]} ))"
-                value_displayed=true
-            fi
-            sum=$(( ${hand_with_11[0]} + ${hand_with_11[1]} ))
-            if [[ ${hand[i+1]} =~ ^[Aa]$ ]]; then
-                if [[ $value_displayed == false ]]; then
-                    echo "The value of your hand is: 12 or 2"
-                    value_displayed=true
-                fi
-                sum=12
-            fi
-        fi
-    done
-    if [[ $sum -eq 0 && $value_displayed == false ]]; then
-        echo "The value of your hand is: $(( ${hand[0]} + ${hand[1]} ))"
+    if [[ $card1 == "a" && $card2 == "a" ]]; then
+        card1=11
+        card2=1
     fi
+    # Convert k, q, j to 10
+    case $card1 in
+        k|q|j)
+            card1=10
+            ;;
+        a)
+            card1=11
+            ;;
+    esac
+
+    case $card2 in
+        k|q|j)
+            card2=10
+            ;;
+        a)
+            card2=11
+            ;;
+    esac
+    hand=$((card1 + card2))
+    echo "Sum of the hand: $hand"
+    read -p "Enter the Dealer's card: " dealer_card
+    if [[ ! $dealer_card =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
+        echo "Invalid input for dealer_card. Please enter a valid card."
+        return
+    fi
+
 }
+
+
 
 case "$1" in
     --help | -h)
@@ -75,7 +79,7 @@ case "$1" in
     --rules | -r)
         echo "Rules:"
         echo "----------------------------------------------------------------------------"
-        echo "1. Cards from 2-10 are worth their face value. Face cards (Jack, Queen, King) are worth 10. Aces are worth 1 or 11."
+        echo "1. Cards from 2-10 are worth their face value. Face cards (Jack, Queen, King) are worth 10. Aces are worth 1 or 11, depending on the player's choice."
         echo "2. You add the Cards together and that is equal to your HAND."
         echo "3. If you have a HAND of higher the one of the Dealer, you win the game."
         echo "4. If you exceed 21, you BUST and lose the game."
@@ -84,7 +88,7 @@ case "$1" in
         exit 0
         ;;
     --win | -w)
-        win_game
+        bestchoice
         ;;
     --play | -p)
         # Hier kommt der Code für das Spiel hin
