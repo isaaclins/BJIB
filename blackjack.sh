@@ -20,13 +20,21 @@ compare_cards() {
         echo "You went bust :("
     else
         if [[ $player_score -eq $dealer_score ]]; then
+            echo "-----------------------------------------------------"
             echo "It was a draw!"
+            echo "-----------------------------------------------------"
         elif [[ $dealer_score -gt $player_score ]]; then
+            echo "-----------------------------------------------------"
             echo "You lost, Dealer has more than you!"
+            echo "-----------------------------------------------------"
         elif [[ $dealer_score -lt $player_score ]]; then
+            echo "-----------------------------------------------------"
             echo "You win! Good lad yourself!"
+            echo "-----------------------------------------------------"
         else
-            echo "Dealer has won...no good. You lose!"
+            echo "-----------------------------------------------------"
+            echo "Something went wrong, please try again."
+            echo "-----------------------------------------------------"
         fi
     fi
 }
