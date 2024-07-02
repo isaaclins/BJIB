@@ -204,14 +204,37 @@ bestchoice() {
     hand=$((card1 + card2))
     echo "Sum of the hand: $hand"
     if [[ $hand -ge 2 && $hand -le 11 ]]; then
+        chancetobust=0 
         echo "Chance to bust if you hit: 0%"
-    elif [[ $hand -ge 12 && $hand -le 16 ]]; then
-        echo "Chance to bust if you hit: 31%"
-    elif [[ $hand -ge 17 && $hand -le 19 ]]; then
-        echo "Chance to bust if you hit: 69%"
+    elif [[ $hand -eq 12 ]]; then
+        chancetobust=19
+        echo "Chance to bust if you hit: 19%"
+    elif [[ $hand -eq 13 ]]; then
+        chancetobust=28
+        echo "Chance to bust if you hit: 28%"
+    elif [[ $hand -eq 14 ]]; then
+        chancetobust=37
+        echo "Chance to bust if you hit: 37%"
+    elif [[ $hand -eq 15 ]]; then
+        chancetobust=46
+        echo "Chance to bust if you hit: 46%"
+    elif [[ $hand -eq 16 ]]; then
+        chancetobust=55
+        echo "Chance to bust if you hit: 55%"
+    elif [[ $hand -eq 17 ]]; then
+        chancetobust=64
+        echo "Chance to bust if you hit: 64%"
+    elif [[ $hand -eq 18 ]]; then
+        chancetobust=73
+        echo "Chance to bust if you hit: 73%"
+    elif [[ $hand -eq 19 ]]; then
+        chancetobust=82
+        echo "Chance to bust if you hit: 82%"
     elif [[ $hand -eq 20 ]]; then
-        echo "Chance to bust if you hit: 92%"
+        chancetobust=91
+        echo "Chance to bust if you hit: 91%"
     elif [[ $hand -eq 21 ]]; then
+        chancetobust=100
         echo "Chance to bust if you hit: 100%"
     else
         echo "Invalid hand value."
@@ -231,7 +254,7 @@ bestchoice() {
     else 
         dealer_card=$dealer_card
     fi
-    if [[ $dealer_card -gt $hand ]]; then
+    if [[ $hand -lt 16 || $chancetobust -lt 50 ]]; then
         echo "Best choice: Hit"
     else
         echo "Best choice: Stand"
