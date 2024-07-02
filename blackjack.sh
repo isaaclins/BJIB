@@ -282,7 +282,7 @@ bestchoice() {
     else
         echo "Best choice: Stand"
     fi
-
+    exit 0
 }
 
 case "$1" in
@@ -310,6 +310,7 @@ case "$1" in
         ;;
     --win | -w)
         bestchoice
+        exit 0
         ;;
     --play | -p)
         echo "This is the game"
