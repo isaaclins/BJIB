@@ -18,6 +18,14 @@
 # change a to 1 if the sum of the hand is more than 21
 # return the sum of the hand
 
+playgame(){
+    cards=(2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a")
+    player_score=0
+    dealer_score=0
+    player_hand=0
+    dealer_hand=0
+
+}
 bestchoice() {
     read -p "Enter the first card: " card1
     # Check for valid input
@@ -53,11 +61,40 @@ bestchoice() {
     esac
     hand=$((card1 + card2))
     echo "Sum of the hand: $hand"
+    if [[ $hand -ge 2 && $hand -le 11 ]]; then
+        echo "Chance to bust if you hit: 0%"
+    elif [[ $hand -ge 12 && $hand -le 16 ]]; then
+        echo "Chance to bust if you hit: 31%"
+    elif [[ $hand -ge 17 && $hand -le 19 ]]; then
+        echo "Chance to bust if you hit: 69%"
+    elif [[ $hand -eq 20 ]]; then
+        echo "Chance to bust if you hit: 92%"
+    elif [[ $hand -eq 21 ]]; then
+        echo "Chance to bust if you hit: 100%"
+    else
+        echo "Invalid hand value."
+    fi
+
+
+
     read -p "Enter the Dealer's card: " dealer_card
     if [[ ! $dealer_card =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
         echo "Invalid input for dealer_card. Please enter a valid card."
         return
     fi
+    if [[ $dealer_card == "a" ]]; then
+        dealer_card=11
+    elif [[ $dealer_card == "k" || $dealer_card == "q" || $dealer_card == "j" ]]; then
+        dealer_card=10
+    else 
+        dealer_card=$dealer_card
+    fi
+    if [[ $dealer_card -gt $hand ]]; then
+        echo "Best choice: Hit"
+    else
+        echo "Best choice: Stand"
+    fi
+
 }
 
 case "$1" in
@@ -89,6 +126,7 @@ case "$1" in
     --play | -p)
         # Hier kommt der Code für das Spiel hin
         echo "This is the game"
+        playgame
         ;;
     *)
         echo "Wrong usage of script."
