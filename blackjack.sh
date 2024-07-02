@@ -8,15 +8,7 @@
 # The script also includes a win option that helps players input the game cards and end with the best winrate possible.
 
 # Author: Isaaclins <3
-# Version: 0.1
-
-# PLAY GAME
-# ask for first card, save in hand.
-# ask for second card, save in hand.
-# change k, q, j to 10
-# change a to 11 if the sum of the hand is less than 21
-# change a to 1 if the sum of the hand is more than 21
-# return the sum of the hand
+# Version: 1.0
 
 compare_cards() {
     local player_score=$1
@@ -44,7 +36,6 @@ playgame(){
     dealer_score=0
     player_hand=0
     dealer_hand=0
-    # Deal cards to player and dealer
     clear
     
     dealer_card1_index=$((RANDOM % ${#cards[@]}))
@@ -275,7 +266,6 @@ case "$1" in
         bestchoice
         ;;
     --play | -p)
-        # Hier kommt der Code für das Spiel hin
         echo "This is the game"
         clear
         playgame
