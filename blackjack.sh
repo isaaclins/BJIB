@@ -43,7 +43,6 @@ bestchoice() {
             card1=11
             ;;
     esac
-
     case $card2 in
         k|q|j)
             card2=10
@@ -59,10 +58,7 @@ bestchoice() {
         echo "Invalid input for dealer_card. Please enter a valid card."
         return
     fi
-
 }
-
-
 
 case "$1" in
     --help | -h)
@@ -100,9 +96,6 @@ case "$1" in
         exit 1
         ;;
 esac
-
-
-
 
 compare_cards() {
     local player_score=$1
