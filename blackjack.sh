@@ -96,3 +96,29 @@ case "$1" in
         exit 1
         ;;
 esac
+
+
+
+
+compare_cards() {
+    local player_score=$1
+    local dealer_score=$2
+
+    if [[ $dealer_score -gt 21 ]]; then
+        echo "You win! The dealer went bust!"
+    elif [[ $player_score -gt 21 ]]; then
+        echo "You went bust :("
+    else
+        if [[ $player_score -eq $dealer_score ]]; then
+            echo "It was a draw!"
+        elif [[ $dealer_score -gt $player_score ]]; then
+            echo "You lost, Dealer has blackjack!"
+        elif [[ $player_score -eq 0 ]]; then
+            echo "You were dealt Blackjack! Congrats you win!"
+        elif [[ $player_score -gt $dealer_score ]]; then
+            echo "You win! Good lad yourself!"
+        else
+            echo "Dealer has won...no good. You lose!"
+        fi
+    fi
+}
