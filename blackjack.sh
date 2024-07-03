@@ -195,13 +195,16 @@ calculate_hand() {
     echo "$sum"
 }
 bestchoice() {
-    read -p "Enter the first card: " card1
-    # Check for valid input
+    local card1=$1
+    local card2=$2
+    local dealer_card=$3
+    echo "Your first Card: $card1"
+    echo "Your second Card: $card2"
+    echo "Dealer's Card: $dealer_card"
     if [[ ! $card1 =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
         echo "Invalid input for card1. Please enter a valid card."
         return
     fi
-    read -p "Enter the second card: " card2
     if [[ ! $card2 =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
         echo "Invalid input for card2. Please enter a valid card."
         return
@@ -229,46 +232,6 @@ bestchoice() {
     esac
     hand=$((card1 + card2))
     echo "Sum of the hand: $hand"
-    if [[ $hand -ge 2 && $hand -le 11 ]]; then
-        chancetobust=0 
-        echo "Chance to bust if you hit: 0%"
-    elif [[ $hand -eq 12 ]]; then
-        chancetobust=19
-        echo "Chance to bust if you hit: 19%"
-    elif [[ $hand -eq 13 ]]; then
-        chancetobust=28
-        echo "Chance to bust if you hit: 28%"
-    elif [[ $hand -eq 14 ]]; then
-        chancetobust=37
-        echo "Chance to bust if you hit: 37%"
-    elif [[ $hand -eq 15 ]]; then
-        chancetobust=46
-        echo "Chance to bust if you hit: 46%"
-    elif [[ $hand -eq 16 ]]; then
-        chancetobust=55
-        echo "Chance to bust if you hit: 55%"
-    elif [[ $hand -eq 17 ]]; then
-        chancetobust=64
-        echo "Chance to bust if you hit: 64%"
-    elif [[ $hand -eq 18 ]]; then
-        chancetobust=73
-        echo "Chance to bust if you hit: 73%"
-    elif [[ $hand -eq 19 ]]; then
-        chancetobust=82
-        echo "Chance to bust if you hit: 82%"
-    elif [[ $hand -eq 20 ]]; then
-        chancetobust=91
-        echo "Chance to bust if you hit: 91%"
-    elif [[ $hand -eq 21 ]]; then
-        chancetobust=100
-        echo "Chance to bust if you hit: 100%"
-    else
-        echo "Invalid hand value."
-    fi
-
-
-
-    read -p "Enter the Dealer's card: " dealer_card
     if [[ ! $dealer_card =~ ^(2|3|4|5|6|7|8|9|10|k|q|j|a)$ ]]; then
         echo "Invalid input for dealer_card. Please enter a valid card."
         return
@@ -280,6 +243,45 @@ bestchoice() {
     else 
         dealer_card=$dealer_card
     fi
+
+    if [[ $hand -ge 2 && $hand -le 11 ]]; then
+        chancetobust=0 
+        echo "Chance to bust if you hit: 0%"
+    elif [[ $hand -eq 12 ]]; then
+        chancetobust=30
+        echo "Chance to bust if you hit: 30.77%"
+    elif [[ $hand -eq 13 ]]; then
+        chancetobust=38
+        echo "Chance to bust if you hit: 38.46%"
+    elif [[ $hand -eq 14 ]]; then
+        chancetobust=46
+        echo "Chance to bust if you hit: 46.15%"
+    elif [[ $hand -eq 15 ]]; then
+        chancetobust=53
+        echo "Chance to bust if you hit: 53.85%"
+    elif [[ $hand -eq 16 ]]; then
+        chancetobust=61
+        echo "Chance to bust if you hit: 61.54%"
+    elif [[ $hand -eq 17 ]]; then
+        chancetobust=69
+        echo "Chance to bust if you hit: 69.23%"
+    elif [[ $hand -eq 18 ]]; then
+        chancetobust=76
+        echo "Chance to bust if you hit: 76.92%"
+    elif [[ $hand -eq 19 ]]; then
+        chancetobust=84
+        echo "Chance to bust if you hit: 84.62%"
+    elif [[ $hand -eq 20 ]]; then
+        chancetobust=92
+        echo "Chance to bust if you hit: 92.31%"
+    elif [[ $hand -eq 21 ]]; then
+        chancetobust=100
+        echo "Chance to bust if you hit: 100%"
+    else
+        echo "Invalid hand value."
+    fi
+
+
     if [[ $hand -lt 16 || $chancetobust -lt 50 ]]; then
         echo "Best choice: Hit"
     else
@@ -312,8 +314,13 @@ case "$1" in
         exit 0
         ;;
     --win | -w)
-        bestchoice
-        exit 0
+        if [[ $# -ne 4 ]]; then
+            echo "Invalid number of arguments. Please provide 3 card values."
+            exit 1
+        else
+            bestchoice "$2" "$3" "$4"
+            exit 0
+        fi
         ;;
     --play | -p)
         echo "This is the game"
