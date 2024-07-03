@@ -34,6 +34,19 @@ To start the game, run the script with one of the following options:
 ## Installation
 Clone the repository or download the files to your local storage. Make sure you have Bash installed on your system. Run the script from your terminal or command line.
 
+### Functions
+
+#### `playgame()`
+This function starts the game of Blackjack. It initializes the player and dealer scores, deals cards, and allows the player to hit or stand. It also determines the winner and keeps track of the scores. The function includes a loop that allows players to play multiple rounds until they choose to quit.
+
+#### `calculate_hand(card1, card2)`
+This function calculates the total value of a hand in Blackjack. It takes two card values as input and returns the sum of the hand. It handles special cases for Ace cards, which can be worth 1 or 11 depending on the player's choice.
+
+#### `bestchoice()`
+This function helps players make the best choice in a game of Blackjack. It prompts the player to enter their cards and the dealer's card, and then calculates the chance of busting if the player hits. Based on the hand value and chance of busting, the function suggests whether the player should hit or stand.
+
+Note: The script also includes a case statement that handles command line options for help, rules, win, and play.
+
 ## Fun Errors Along The Journey
 I've had my fair share of dumb errors.
 here are some screenshots I've made along the way:
@@ -46,6 +59,7 @@ Expected output:
 Given output:
 `Your hand: 174`
 <br>
+
 ## Contribution
 Feedback and contributions are welcome. Please create an issue or a pull request if you would like to contribute to the improvement of the project.
 
