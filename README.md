@@ -44,7 +44,7 @@ Expected output:
 `Your hand: (number between 3 & 21)`
 <br>
 Given output:
-`Your hand: **174**`
+`Your hand: 174`
 <br>
 ## Contribution
 Feedback and contributions are welcome. Please create an issue or a pull request if you would like to contribute to the improvement of the project.
