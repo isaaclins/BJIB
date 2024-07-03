@@ -37,7 +37,9 @@ Clone the repository or download the files to your local storage. Make sure you 
 ## Fun Errors Along The Journey
 I've had my fair share of dumb errors.
 here are some screenshots I've made along the way:
+<br>
 ![alt text](/img/image.png)
+<br>
 Expected output:
 `Your hand: (number between 3 & 21)`
 Given output:
