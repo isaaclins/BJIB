@@ -66,6 +66,31 @@ Options:
 ----------------------------------------------------------------------------" ]
 }
 
+@test "Script runs with win flag and card values and expects hit as best choice" {
+  run ./../blackjack.sh -w 3 9 2
+  [ "$status" -eq 0 ]
+  [ "$output" = "Your first Card: 3
+Your second Card: 9
+Dealer's Card: 2
+Sum of the hand: 12
+Chance to bust if you hit: 30.77%
+Best choice: Hit" ]
+}
 
+@test "Script runs with win flag and card values and expects stand as best choice" {
+  run ./../blackjack.sh -w 9 9 2
+  [ "$status" -eq 0 ]
+  [ "$output" = "Your first Card: 9
+Your second Card: 9
+Dealer's Card: 2
+Sum of the hand: 18
+Chance to bust if you hit: 76.92%
+Best choice: Stand" ]
+}
 
+@test "Script runs with win flag and with errors as the wrong amount of cards were given" {
+  run ./../blackjack.sh -w 9 9 2 3
+  [ "$status" -eq 1 ]
+  [ "$output" = "Invalid number of arguments. Please provide 3 card values." ]
+}
 # cielo muss wasser ihfrüre 
