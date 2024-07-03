@@ -1,2 +1,0 @@
-# BJIB: BlackJack In Bash
- 
