@@ -1,12 +1,18 @@
 #!/usr/bin/env bats
 
-@test "Script runs with error because no parameters OR the wrong parameters were given" {
+@test "Script runs with error because no parameters were given" {
   run ./../blackjack.sh
   [ "$status" -eq 1 ]
   [ "$output" = "Wrong usage of script.
 For help run './blackjack.sh --help' OR 'blackjack.sh -h'" ]
 }
 
+@test "Script runs with error because wrong parameter was given" {
+  run ./../blackjack.sh wrong
+  [ "$status" -eq 1 ]
+  [ "$output" = "Wrong usage of script.
+For help run './blackjack.sh --help' OR 'blackjack.sh -h'" ]
+}
 
 @test "Script runs as expected with short help flag" {
   run ./../blackjack.sh -h
@@ -60,10 +66,5 @@ Options:
 ----------------------------------------------------------------------------" ]
 }
 
-@test "Script runs with error because wrong parameter was given" {
-  run ./../blackjack.sh wrong
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
-}
 
 # cielo muss wasser ihfrüre 
