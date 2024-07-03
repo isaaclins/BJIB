@@ -93,4 +93,10 @@ Best choice: Stand" ]
   [ "$status" -eq 1 ]
   [ "$output" = "Invalid number of arguments. Please provide 3 card values." ]
 }
+
+@test "Script runs with win flag and with errors as no cards were given" {
+  run ./../blackjack.sh -w
+  [ "$status" -eq 1 ]
+  [ "$output" = "Invalid number of arguments. Please provide 3 card values." ]
+}
 # cielo muss wasser ihfrüre 
