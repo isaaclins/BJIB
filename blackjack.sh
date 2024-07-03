@@ -7,6 +7,9 @@
 # The script also includes a help option that explains the rules of the game and how to play.
 # The script also includes a win option that helps players input the game cards and end with the best winrate possible.
 
+# Any feedback is welcome! Enjoy the game!
+# If you have any questions, feel free to ask me on GitHub.
+
 # Author: Isaaclins <3
 # Version: 1.0
 
