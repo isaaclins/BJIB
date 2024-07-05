@@ -102,21 +102,25 @@ playgame(){
         if [[ $player_card == "k" || $player_card == "q" || $player_card == "j" ]]; then
             player_card=10
         fi
-
         player_hand=$((player_hand + player_card))
-        echo "You drew a $player_card"
-        echo "Your hand: $player_hand"
-        echo "Dealer's hand: $dealer_card1 + ???"
-        read -p "Do you want to hit or stand? " choice
-        if [[ $choice == "stand" || $choice == "STAND" || $choice == "s" || $choice == "S" ]]; then
+        if [[ $player_hand -gt 21 ]]; then
+            echo "You went bust :("
+            break
+        else 
+            echo "You drew a $player_card"
+            echo "Your hand: $player_hand"
+            echo "Dealer's hand: $dealer_card1 + ???"
+            read -p "Do you want to hit or stand? " choice
+            if [[ $choice == "stand" || $choice == "STAND" || $choice == "s" || $choice == "S" ]]; then
             
             break
+            fi
         fi
         done
         if [[ $dealer_card3 ]]; then
-            echo "Dealer's hand: $dealer_card1 + $dealer_card2 + $dealer_card3 = $dealer_hand"
+        echo "Dealer's hand: $dealer_card1 + $dealer_card2 + $dealer_card3 = $dealer_hand"
         else
-            echo "Dealer's hand: $dealer_card1 + $dealer_card2 = $dealer_hand"
+        echo "Dealer's hand: $dealer_card1 + $dealer_card2 = $dealer_hand"
         fi
         echo "Your hand: $player_hand"
 
