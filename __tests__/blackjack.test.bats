@@ -1,21 +1,21 @@
 #!/usr/bin/env bats
 
 @test "Script runs with error because no parameters were given" {
-  run ./../blackjack.sh
+  run ./../code/blackjack.sh
   [ "$status" -eq 1 ]
   [ "$output" = "Wrong usage of script.
 For help run './blackjack.sh --help' OR 'blackjack.sh -h'" ]
 }
 
 @test "Script runs with error because wrong parameter was given" {
-  run ./../blackjack.sh wrong
+  run ./../code/blackjack.sh wrong
   [ "$status" -eq 1 ]
   [ "$output" = "Wrong usage of script.
 For help run './blackjack.sh --help' OR 'blackjack.sh -h'" ]
 }
 
 @test "Script runs as expected with short help flag" {
-  run ./../blackjack.sh -h
+  run ./../code/blackjack.sh -h
   [ "$status" -eq 0 ]
   [ "$output" = "Usage: blackjack.sh [OPTIONS]
 ----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ Options:
 
 
 @test "Script runs as expected with long help flag" {
-  run ./../blackjack.sh --help
+  run ./../code/blackjack.sh --help
   [ "$status" -eq 0 ]
   [ "$output" = "Usage: blackjack.sh [OPTIONS]
 ----------------------------------------------------------------------------
@@ -42,7 +42,7 @@ Options:
 }
 
 @test "Script runs with short rule parameter as expected" {
-  run ./../blackjack.sh -r
+  run ./../code/blackjack.sh -r
   [ "$status" -eq 0 ]
   [ "$output" = "Rules:
 ----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ Options:
 ----------------------------------------------------------------------------" ]
 }
 @test "Script runs with long rule parameter as expected " {
-  run ./../blackjack.sh --rules
+  run ./../code/blackjack.sh --rules
   [ "$status" -eq 0 ]
   [ "$output" = "Rules:
 ----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ Options:
 }
 
 @test "Script runs with win flag and card values and expects hit as best choice" {
-  run ./../blackjack.sh -w 3 9 2
+  run ./../code/blackjack.sh -w 3 9 2
   [ "$status" -eq 0 ]
   [ "$output" = "Your first Card: 3
 Your second Card: 9
@@ -78,7 +78,7 @@ Best choice: Hit" ]
 }
 
 @test "Script runs with win flag and card values and expects stand as best choice" {
-  run ./../blackjack.sh -w 9 9 2
+  run ./../code/blackjack.sh -w 9 9 2
   [ "$status" -eq 0 ]
   [ "$output" = "Your first Card: 9
 Your second Card: 9
@@ -89,13 +89,13 @@ Best choice: Stand" ]
 }
 
 @test "Script runs with win flag and with errors as the wrong amount of cards were given" {
-  run ./../blackjack.sh -w 9 9 2 3
+  run ./../code/blackjack.sh -w 9 9 2 3
   [ "$status" -eq 1 ]
   [ "$output" = "Invalid number of arguments. Please provide 3 card values." ]
 }
 
 @test "Script runs with win flag and with errors as no cards were given" {
-  run ./../blackjack.sh -w
+  run ./../code/blackjack.sh -w
   [ "$status" -eq 1 ]
   [ "$output" = "Invalid number of arguments. Please provide 3 card values." ]
 }
