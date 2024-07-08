@@ -1,9 +1,17 @@
 topcharacter() {
-    echo -e "|$1      |"
+    if [[ ${#1} -eq 2 ]]; then
+        echo -e "|$1     |"
+    else
+        echo -e "|$1      |"
+    fi
 }
 
 bottomcharacter() {
-    echo -e "|      $1|"
+    if [[ ${#1} -eq 2 ]]; then
+        echo -e "|     $1|"
+    else
+        echo -e "|      $1|"
+    fi
 }
 
 print_characters() {
@@ -24,5 +32,5 @@ print_characters() {
 }
 
 
-print_characters A B c 4
+print_characters K 2
 

@@ -14,14 +14,22 @@
 # Version: 1.0
 
 topcharacter() {
-    echo -e "|$1      |"
+    if [[ ${#1} -eq 2 ]]; then
+        echo -e "|$1     |"
+    else
+        echo -e "|$1      |"
+    fi
 }
 
 bottomcharacter() {
-    echo -e "|      $1|"
+    if [[ ${#1} -eq 2 ]]; then
+        echo -e "|     $1|"
+    else
+        echo -e "|      $1|"
+    fi
 }
 
-print_characters() {
+print_card() {
     local top=' ------- '
     local side='|       |'
     local topout=''
@@ -37,6 +45,7 @@ print_characters() {
     done
     echo -e "$topout\n$topcharacter\n$blankside\n$blankside\n$blankside\n$bottomcharacter\n$topout"
 }
+
 
 
 playgame(){
@@ -73,13 +82,16 @@ playgame(){
             dealer_card3=${cards[$dealer_card3_index]}
             unset "cards[$dealer_card3_index]"
             dealer_hand=$(calculate_hand "$dealer_hand" "$dealer_card3")
+            echo "Dealer picked cards $dealer_card1, and ? and had under 16"
             echo "Dealer took another card: $dealer_card3"
             echo "Dealer's hand: $dealer_card1 + $dealer_card3 + ??? "
+            print_card "$dealer_card1"  "$dealer_card3" "?"
 
         else
-        echo "-----------------------------------------------------"
-        echo "Dealer's hand: $dealer_card1 + ???"
-        echo "-----------------------------------------------------"
+        
+        echo "Dealer's hand:"
+        print_card "$dealer_card1" "?"
+        
         fi
 
         player_card1_index=$((RANDOM % ${#cards[@]}))
@@ -98,9 +110,10 @@ playgame(){
 
 
 
-        echo "-----------------------------------------------------"
+        
         echo "Your hand: $player_card1 + $player_card2 = $player_hand"
-        echo "-----------------------------------------------------"
+        print_card "$player_card1" "$player_card2"
+        
 
 
         echo "Do you want to hit or stand?"
@@ -109,6 +122,9 @@ playgame(){
             echo "Invalid choice. Please enter 'hit' or 'stand' (h/s)."
             read -p "Enter your choice (hit/stand): " choice
         done
+        clear
+        echo "Dealer's hand: $dealer_card1 + ???"
+        print_card "$dealer_card1" "?"
         while [[ $choice == "h" || $choice == "H" || $choice == "HIT" || $choice == "hit" ]]; do
             player_card_index=$((RANDOM % ${#cards[@]}))
             while [[ -z ${cards[$player_card_index]} ]]; do
@@ -134,7 +150,7 @@ playgame(){
         else 
             echo "You drew a $player_card"
             echo "Your hand: $player_hand"
-            echo "Dealer's hand: $dealer_card1 + ???"
+            print_card "$player_card1" "$player_card2" "$player_card"
             read -p "Do you want to hit or stand? " choice
             if [[ $choice == "stand" || $choice == "STAND" || $choice == "s" || $choice == "S" ]]; then
             
@@ -144,10 +160,13 @@ playgame(){
         done
         if [[ $dealer_card3 ]]; then
         echo "Dealer's hand: $dealer_card1 + $dealer_card2 + $dealer_card3 = $dealer_hand"
+        print_card "$dealer_card1" "$dealer_card2" "$dealer_card3"
         else
         echo "Dealer's hand: $dealer_card1 + $dealer_card2 = $dealer_hand"
+        print_card "$dealer_card1" "$dealer_card2"
         fi
         echo "Your hand: $player_hand"
+        print_card "$player_card1" "$player_card2" "$player_card"
 
 
         # check for winner
@@ -159,37 +178,37 @@ playgame(){
                 echo "You went bust :("
             else
                 if [[ $player_hand -eq $dealer_hand ]]; then
-                    echo "-----------------------------------------------------"
+                    
                     echo "It was a draw!"
-                    echo "-----------------------------------------------------"
+                    
                 elif [[ $dealer_hand -gt $player_hand ]]; then
                     dealer_score=$((dealer_score + 1))
-                    echo "-----------------------------------------------------"
+                    
                     echo "You lost, Dealer has more than you!"
-                    echo "-----------------------------------------------------"
+                    
                 elif [[ $dealer_hand -lt $player_hand ]]; then
                 player_score=$((player_score + 1))
-                    echo "-----------------------------------------------------"
+                    
                     echo "You win! Good lad yourself!"
-                    echo "-----------------------------------------------------"
+                    
                 else
-                    echo "-----------------------------------------------------"
+                    
                     echo "Something went wrong, please try again."
-                    echo "-----------------------------------------------------"
+                    
                 fi
             fi
         echo "Player score: $player_score"
         echo "Dealer score: $dealer_score"
-        echo "-----------------------------------------------------"
         echo "Do you want to play another round? (yes/no)"
         read -p "Enter your choice: " play_again
-        while [[ ! $play_again =~ ^(yes|no|YES|NO)$ ]]; do
+        while [[ ! $play_again =~ ^(yes|no|YES|NO|y|n)$ ]]; do
             echo "Invalid choice. Please enter 'yes' or 'no'."
             read -p "Enter your choice: " play_again
+            clear
         done
         if [[ $play_again == "no" || $play_again == "NO" ]]; then
             echo "Thanks for playing! Goodbye!"
-            break
+            exit 0
         fi
         
     done
@@ -355,6 +374,7 @@ case "$1" in
         echo "This is the game"
         clear
         playgame
+        exit 0
         ;;
     *)
         echo "Wrong usage of script."
