@@ -46,8 +46,6 @@ print_card() {
     echo -e "$topout\n$topcharacter\n$blankside\n$blankside\n$blankside\n$bottomcharacter\n$topout"
 }
 
-
-
 playgame(){
     player_score=0
     dealer_score=0
@@ -56,9 +54,6 @@ playgame(){
         cards=(2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a" "k" "q" "j" "a")
         player_hand=0
         dealer_hand=0
-
-
-        
         dealer_card1_index=$((RANDOM % ${#cards[@]}))
         while [[ -z ${cards[$dealer_card1_index]} ]]; do
             dealer_card1_index=$((RANDOM % ${#cards[@]}))
@@ -107,15 +102,10 @@ playgame(){
         player_card2=${cards[$player_card2_index]}
         unset "cards[$player_card2_index]"
         player_hand=$(calculate_hand "$player_card1" "$player_card2")
-
-
-
         
         echo "Your hand: $player_card1 + $player_card2 = $player_hand"
         print_card "$player_card1" "$player_card2"
-        
-
-
+    
         echo "Do you want to hit or stand?"
         read -p "Enter your choice (hit/stand): " choice
         while [[ ! $choice =~ ^(hit|stand|HIT|STAND|h|s|H|S)$ ]]; do
