@@ -46,9 +46,9 @@ print_card() {
     for character in "$@"
     do
         topout+="$top "
-        topcharacter+="$(topcharacter $character) "
+        topcharacter+="$(topcharacter "$character") "
         blankside+="$side "
-        bottomcharacter+="$(bottomcharacter $character) "
+        bottomcharacter+="$(bottomcharacter "$character") "
     done
     echo -e "$topout\n$topcharacter\n$blankside\n$blankside\n$blankside\n$bottomcharacter\n$topout"
 }
@@ -112,10 +112,12 @@ playgame(){
     echo "Your hand: $player_card1 + $player_card2 = $player_hand"
     print_card "$player_card1" "$player_card2"
     echo "Do you want to hit or stand?"
-    read -p "Enter your choice (hit/stand): " choice
+    echo "Enter your choice (hit/stand): " 
+    read -r choice
     while [[ ! $choice =~ ^(hit|stand|HIT|STAND|h|s|H|S)$ ]]; do
         echo "Invalid choice. Please enter 'hit' or 'stand' (h/s)."
-        read -p "Enter your choice (hit/stand): " choice
+        echo "Enter your choice (hit/stand): " 
+        read -r choice
     done
     clear
     echo "Dealer's hand: $dealer_card1 + ???"
@@ -145,7 +147,8 @@ playgame(){
         echo "You drew a $player_card"
         echo "Your hand: $player_hand"
         print_card "$player_card1" "$player_card2" "$player_card"
-        read -p "Do you want to hit or stand? " choice
+        echo "Do you want to hit or stand? "
+        read -r choice
         if [[ $choice == "stand" || $choice == "STAND" || $choice == "s" || $choice == "S" ]]; then
         
         break
@@ -192,10 +195,12 @@ playgame(){
     echo "Player score: $player_score"
     echo "Dealer score: $dealer_score"
     echo "Do you want to play another round? (yes/no)"
-    read -p "Enter your choice: " play_again
+    echo "Enter your choice: " 
+    read -r play_again
     while [[ ! $play_again =~ ^(yes|no|YES|NO|y|n)$ ]]; do
         echo "Invalid choice. Please enter 'yes' or 'no'."
-        read -p "Enter your choice: " play_again
+        echo "Enter your choice: " 
+        read -r play_again
         clear
     done
     if [[ $play_again == "no" || $play_again == "NO" ]]; then
