@@ -13,6 +13,9 @@
 # Author: Isaaclins <3
 # Version: 1.0
 
+
+# Gibt den oberen Teil des Kartenlayouts zurück
+# Argument: Zeichenkette (Kartenwert)
 topcharacter() {
     if [[ ${#1} -eq 2 ]]; then
         echo -e "|$1     |"
@@ -21,6 +24,8 @@ topcharacter() {
     fi
 }
 
+# Gibt den unteren Teil des Kartenlayouts zurück
+# Argument: Zeichenkette (Kartenwert)
 bottomcharacter() {
     if [[ ${#1} -eq 2 ]]; then
         echo -e "|     $1|"
@@ -29,6 +34,8 @@ bottomcharacter() {
     fi
 }
 
+# Druckt eine oder mehrere Karten auf dem Bildschirm
+# Argumente: Zeichenketten (Kartenwerte)
 print_card() {
     local top=' ------- '
     local side='|       |'
@@ -46,6 +53,8 @@ print_card() {
     echo -e "$topout\n$topcharacter\n$blankside\n$blankside\n$blankside\n$bottomcharacter\n$topout"
 }
 
+# Führt das Blackjack-Spiel aus
+# Keine Argumente
 playgame(){
     player_score=0
     dealer_score=0
@@ -203,6 +212,9 @@ playgame(){
         
     done
 }
+
+# Berechnet den Wert einer Hand basierend auf den Kartenwerten
+# Argumente: Zeichenketten (Kartenwerte)
 calculate_hand() {
     local card1=$1
     local card2=$2
@@ -232,6 +244,8 @@ calculate_hand() {
     sum=$((card1 + card2))
     echo "$sum"
 }
+# Gibt den besten Zug basierend auf den Kartenwerten des Spielers und des Dealers zurück
+# Argumente: Zeichenketten (Kartenwerte)
 bestchoice() {
     local card1=$1
     local card2=$2
