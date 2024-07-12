@@ -286,13 +286,17 @@ bestchoice() {
         echo "Invalid input for dealer_card. Please enter a valid card."
         return
     fi
-    if [[ $dealer_card == "a" ]]; then
-        dealer_card=11
-    elif [[ $dealer_card == "k" || $dealer_card == "q" || $dealer_card == "j" ]]; then
-        dealer_card=10
-    else 
-        dealer_card=$dealer_card
-    fi
+    case $dealer_card in
+        a)
+            dealer_card=11
+            ;;
+        k|q|j)
+            dealer_card=10
+            ;;
+        *)
+            dealer_card=$((dealer_card))
+            ;;
+    esac
 
     if [[ $hand -ge 2 && $hand -le 11 ]]; then
         chancetobust=0 
