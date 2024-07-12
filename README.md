@@ -91,6 +91,9 @@ Expected output:
 Given output:
 `Your hand: 174`
 
+### Note:
+All other errors were not reported as they were not fun.
+
 ## Contribution
 
 Feedback and contributions are welcome. Please create an issue or a pull request if you would like to contribute to the improvement of the project.
